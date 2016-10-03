@@ -71,8 +71,10 @@ def get_common_user_agents():
     if response.status_code != requests.codes.OK:
         raise WeProbablyGotCaught(response.url)
 
+    # Many websites have code supporting outdated clients.  Often the
+    # DOM's implementation is vastly different.
     nodes = html.fromstring(response.content).cssselect(selector)
-    user_agents = [node.text for node in nodes]
+    user_agents = [node.text for node in nodes][:5]
 
     return user_agents
 
